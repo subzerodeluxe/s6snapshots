@@ -58,7 +58,7 @@ export class SnapModalPage {
       'snapTitle': ['', [Validators.required, Validators.minLength(4), Validators.maxLength(25)]],
       'snapImage': ['', [Validators.required]],
       'snapDate': ['', [Validators.required]],
-      'snapSummary': ['',[Validators.required, Validators.maxLength(150), Validators.minLength(5)]],
+      'snapSummary': ['',[Validators.required, Validators.maxLength(150), Validators.minLength(10)]],
       'snapTags': ['', [Validators.required]]
     });
   }
@@ -181,8 +181,9 @@ export class SnapModalPage {
     // console.log('Doorgegeven id: ', this.snapshot.id); 
      this.snapService.deleteSnapshot(this.snapshot.id)
        .then(() => { 
+        this.util.presentToast('Snapshot is verwijderd', 'bottom');
          setTimeout(() => { 
-           this.closeModal(); this.util.presentToast('Snapshot is verwijderd', 'bottom');
+          this.closeModal(); 
          }, 1000); 
        })
        .catch(err => this.util.presentToast('Kon snapshot niet verwijderen :(', 'bottom')); 

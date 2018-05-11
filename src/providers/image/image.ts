@@ -24,7 +24,7 @@ export class ImageProvider {
 
         this.camera.getPicture(cameraOptions)
             .then((data) => {
-                this.cameraImage 	= "data:image/jpeg;base64," + data;
+                this.cameraImage = "data:image/jpeg;base64," + data;
                 resolve(this.cameraImage);
             });
         });
