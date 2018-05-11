@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-navbar>
+      <ion-title text-center>
+         Snapshots 
+      </ion-title>
+      <ion-buttons end>
+       <button
+          ion-button
+          icon-only
+          (click)="logOut()">
+  	  <ion-icon name="exit"></ion-icon>
+       </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+  
+<ion-content class="list-big-content">
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content 
+          pullingIcon="arrow-dropdown"
+          pullingText="Haal nieuwe snapshots"
+          refreshingSpinner="circles"
+          refreshingText="Verversen ...">
+        </ion-refresher-content>
+      </ion-refresher>
+      
+      
+      <div *ngIf="fetchingData" class="fetching">
+          <ion-spinner color="spinner"></ion-spinner>
+      </div>
+
+      <div class="list-big">
+          <ion-list *ngFor="let snapshot of snapshots">
+            <button class="list-item" ion-item (click)="editSnapshot(snapshot)">
+              <ion-row no-padding class="content-row">
+                <ion-col no-padding width-33 class="item-avatar">
+                  <preload-image class="avatar-image" [ratio]="{w:1, h:1}" [src]="snapshot.image"></preload-image>
+                </ion-col>
+                <ion-col no-padding width-57 class="item-content">
+                  <h3 class="item-title">{{snapshot.title}}</h3>
+                  <p class="item-description" rows="3">{{snapshot.summary}}</p>
+                </ion-col>
+                <ion-col no-padding width-10 class="item-icon">
+                  <ion-icon name="arrow-forward"></ion-icon>
+                </ion-col>
+              </ion-row>
+            </button>
+          </ion-list>
+        </div>
+
+  <ion-fab right bottom>
+    <button (click)="addSnapshot()" ion-fab color="primary">
+      <ion-icon name="add"></ion-icon></button>
+  </ion-fab>
+</ion-content>
+  
+
+  
+
+ 

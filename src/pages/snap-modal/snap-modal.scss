@@ -1,0 +1,146 @@
+.ios, .md {
+    page-snap-modal {
+        ion-header {
+            @include header-styles(color($colors, header, base), color($colors, header, contrast));
+        }
+
+        .forms-examples-content {
+
+            background-color: color($colors, background, base);
+
+            .sample-form {
+                .form-section {
+                    padding: 0px 14px;
+
+                    .item:first-child
+                    {
+                        margin-top: 20px;
+                    }
+                }
+
+                ion-item {
+                    @include basic-input-style(color($colors, background, base), $theme-color-secondary, $white-d);
+
+                    &.item
+                    {
+                        margin-top: 14px;
+
+                        &.item-label-floating
+                        {
+                            margin-top: 0px;
+
+                            ion-label {
+                                color: $white-d;
+                            }
+                        }
+
+                        .item-inner
+                        {
+                            ion-icon {
+                                color: $theme-color;
+                            }
+                        }
+                    }
+
+                    &:first-of-type {
+                        margin-top: 0px;
+                    }
+                }
+
+                .section-title
+                {
+                    font-size: 1.8rem;
+                    line-height: 1.2;
+                    letter-spacing: 1.1px;
+                    text-align: center;
+                    color: $theme-color;
+                    font-weight: 400;
+                    margin: 0px;
+                }
+
+                .form-action-button
+                {
+                    margin: 0px;
+                    margin-top: 20px;
+
+                    @include call-to-action-button-styles(color($colors, button, base), color($colors, button, contrast));
+                }
+		    }
+        } // forms example 
+
+        .post-example-view {
+			padding-bottom: 20px;
+
+			.post-form {
+				.upload-image-button {
+					border-radius: 6px;
+					background-color: $white;
+					color: $white-d;
+					height: initial;
+					margin: 30px 0px;
+					padding-top: 16px;
+					padding-bottom: 32px;
+					@include element-shadow();
+					contain: style layout;
+
+					.button-inner
+					{
+						flex-wrap: wrap;
+
+						ion-icon {
+							flex: 0 0 100%;
+					    max-width: 100%;
+							font-size: 3.8em;
+						}
+
+						.button-title
+						{
+							flex: 0 0 100%;
+					    max-width: 100%;
+							font-size: 1.4rem;
+							color: $white-d;
+							font-weight: 400;
+							margin: 0px;
+						}
+					}
+				}
+
+				.item.item-textarea
+				{
+					background-color: $white;
+					font-size: 1.4rem;
+
+					.item-inner
+					{
+						padding: 0px 14px;
+					}
+				}
+
+				.choose-category-button
+				{
+					border-radius: 6px;
+					background-color: $white;
+					color: $white-d;
+					margin: 30px 0px;
+					@include element-shadow();
+
+					.button-inner
+					{
+						justify-content: space-between;
+
+						ion-icon {
+							color: $theme-color;
+							font-size: 2.2em;
+						}
+					}
+				}
+
+				.section-title
+				{
+					margin-top: 40px;
+					margin-bottom: 30px;
+				}
+			}
+		} 
+    }
+}

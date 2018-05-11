@@ -1,6 +1,6 @@
 {
   "name": "s6snapshots_final",
-  "app_id": "",
+  "app_id": "62c63195",
   "type": "ionic-angular",
   "integrations": {
     "cordova": {}

@@ -1,0 +1,77 @@
+<ion-header>
+  <ion-navbar color="primary">
+     <ion-title text-center>
+         <div *ngIf="!isEditable">Voeg snapshot toe</div>
+         <div *ngIf="isEditable">Wijzig snapshot</div>
+     </ion-title>
+     <ion-buttons start>
+        <button ion-button (click)="closeModal()">
+           <span showWhen="ios">Annuleer</span>
+           <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
+        </button>
+     </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="forms-examples-content">
+  <div class="forms-wrapper">
+      <div class="post-example-view">
+        <form class="sample-form post-form" [formGroup]="snapForm">
+          <section class="form-section">
+            <ion-item>
+              <ion-input type="text" [(ngModel)]="snapTitle" placeholder="Noem iets interessants" formControlName="snapTitle" clearInput></ion-input>
+            </ion-item>
+            <button *ngIf="!snapImage" ion-button block large class="upload-image-button" (click)="selectImage()">
+              <ion-icon name="camera"></ion-icon>
+              <h3 class="button-title">Afbeelding uploaden</h3>
+            </button>
+            <preload-image *ngIf="snapImage" [ratio]="{w:1, h:1}" [src]="snapImage" [alt]="snapTitle" [title]="snapTitle"></preload-image>
+          </section>
+          <ion-item>
+            <ion-textarea rows="7" [(ngModel)]="snapSummary" placeholder="Vandaag heb ik het volgende gedaan ..." formControlName="snapSummary"></ion-textarea>
+          </ion-item>
+
+          <section class="form-section">
+              <ion-item>
+                <ion-label>Tags:</ion-label>
+                <ion-select
+                    formControlName="snapTags"
+                    [(ngModel)]="snapTags"
+                    multiple="true">
+                    <ion-option value="Brainstormsessie">Brainstormsessie</ion-option>
+                    <ion-option value="Development">Development</ion-option>
+                    <ion-option value="Design">Design</ion-option>
+                    <ion-option value="Feedback">Feedback</ion-option>
+                    <ion-option value="Testing">Testing</ion-option>
+                    <ion-option value="Overig">Overig</ion-option>
+                </ion-select>
+              </ion-item>
+            </section>
+
+          <section class="form-section">
+            <ion-item>
+              <ion-input type="text" [(ngModel)]="snapDate" placeholder="Datum" formControlName="snapDate" clearInput></ion-input>
+            </ion-item>
+          </section>
+        
+          <section class="form-section">
+            <button ion-button block class="form-action-button create-post-button" 
+            [disabled]="!snapForm.valid">
+                <div *ngIf="!isEditable" (click)="saveSnapshot()">
+                  Creëer nieuwe snapshot 
+                </div>
+      
+                <div *ngIf="isEditable" (click)="saveSnapshot()">
+                  Wijzig snapshot  
+                </div>
+            </button>
+      
+            <button ion-button block class="form-action-button create-post-button" *ngIf="isEditable" (click)=deleteSnapshot()>
+                Verwijder snapshot
+            </button>
+          </section>
+        </form>
+      </div>
+    </div>
+ 
+</ion-content>

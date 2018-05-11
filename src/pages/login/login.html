@@ -1,0 +1,32 @@
+<ion-content padding>
+
+  <div text-center class="logo">
+    <img style="width:65%; height: 65%;" src="./assets/imgs/logo.png">
+  </div>
+
+  <div text-center class="login-box">
+    <form [formGroup]="userForm">
+          <ion-list class="item item-trns">
+              <ion-item class="item item-trns">
+                <ion-input placeholder="Email" formControlName="email" type="email"></ion-input>
+              </ion-item>
+
+              <ion-item class="item item-trns">
+                <ion-input placeholder="Wachtwoord" formControlName="password" [type]="pwdType"></ion-input>
+                <button ion-button clear item-end (click)='showHidePassword()' style="height:32px;">
+                  <ion-icon [name]='pwdIcon'  style="font-size:32px; color:#fff"></ion-icon>
+                </button>
+        
+              </ion-item>
+
+          </ion-list>
+          <button ion-button color="spinner" type="submit" 
+          (click)="login()" [disabled]="!userForm.valid">Login</button>
+      </form> 
+
+      <div *ngIf="fetchingData" class="fetching">
+          <ion-spinner color="spinner"></ion-spinner>
+      </div>
+
+  </div>  
+</ion-content>
