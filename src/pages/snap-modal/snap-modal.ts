@@ -56,7 +56,7 @@ export class SnapModalPage {
   initForm() {
     this.snapForm = this.formBuilder.group({
       'snapTitle': ['', [Validators.required, Validators.minLength(4), Validators.maxLength(25)]],
-      'snapImage': ['', [Validators.required]],
+      'snapImage': ['',],
       'snapDate': ['', [Validators.required]],
       'snapSummary': ['',[Validators.required, Validators.maxLength(150), Validators.minLength(10)]],
       'snapTags': ['', [Validators.required]]
