@@ -159,7 +159,7 @@ export class SnapModalPage {
       } else {
         //this.util.presentToast('TESTING', 'bottom'); 
         image = normalizeURL(image);
-        this.util.presentToast('Uploading image', 'bottom');
+        //this.util.presentToast('Uploading image', 'bottom');
         //this.util.presentToast(JSON.stringify(image), 'bottom'); 
         this.snapService.uploadImage(image)
           .then(photoURL => { 
