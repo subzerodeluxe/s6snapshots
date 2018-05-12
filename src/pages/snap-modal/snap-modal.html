@@ -22,12 +22,17 @@
               <ion-input type="text" [(ngModel)]="snapTitle" placeholder="Noem iets interessants" formControlName="snapTitle" clearInput></ion-input>
             </ion-item>
             
-            <ion-item *ngIf="!snapImage" (click)="selectImage()">
+            <!-- <ion-item *ngIf="!snapImage" (click)="selectImage()">
               <button ion-button block large class="upload-image-button">
                   <ion-icon name="camera"></ion-icon>
                   <h3 class="button-title">Afbeelding uploaden</h3>
                   <input type="hidden" name="snapImage" formControlName="snapImage" [(ngModel)]="snapImage">
               </button>
+            </ion-item> -->
+            <ion-item>
+              
+                  <input  (click)="selectImage()" name="snapImage" formControlName="snapImage" [(ngModel)]="snapImage">
+              
             </ion-item>
 
             <preload-image *ngIf="snapImage" [ratio]="{w:1, h:1}" [src]="snapImage" [alt]="snapTitle" [title]="snapTitle"></preload-image>
