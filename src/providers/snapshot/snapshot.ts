@@ -59,7 +59,7 @@ export class SnapshotProvider {
   };
 
   uploadImage(imageURI){
-    this.util.presentToast('Komen we hier wel?', 'bottom'); 
+    this.util.presentToast(JSON.stringify(imageURI), 'bottom'); 
      // const docId = this.db.createId(); // generates random id for document
       //const path = `${docId}.jpg`;  // set the path (id + .jpg)
       return new Promise<any>((resolve, reject) => {
