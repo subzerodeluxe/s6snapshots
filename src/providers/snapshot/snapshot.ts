@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { Subscription, Subject } from 'rxjs';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { Snapshot } from '../../models/snapshot.interface';
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app';
+import 'firebase/storage';
 //import { AngularFireUploadTask, AngularFireStorage } from 'angularfire2/storage';
 
 @Injectable()
@@ -64,14 +65,20 @@ export class SnapshotProvider {
 
       const storageRef = firebase.storage().ref(path);
       
-      this.encodeImageUri(imageURI, function(image64){
-        storageRef.putString(image64, 'data_url')
-        .then(snapshot => {
-          resolve(snapshot.downloadURL)
-        }, err => {
-          reject(err);
-        })
-      })
+      storageRef.putString(imageURI, 'data_url')
+      .then(snapshot => {
+            resolve(snapshot.downloadURL)
+          }, err => {
+            reject(err);
+          });
+      // this.encodeImageUri(imageURI, function(image64){
+      //   storageRef.putString(image64, 'data_url')
+      //   .then(snapshot => {
+      //     resolve(snapshot.downloadURL)
+      //   }, err => {
+      //     reject(err);
+      //   })
+      // })
     })
   }
 
