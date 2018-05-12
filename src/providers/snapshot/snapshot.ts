@@ -58,28 +58,21 @@ export class SnapshotProvider {
   };
 
   uploadImage(imageURI){
-    return new Promise<any>((resolve, reject) => {
-      
-      const docId = this.db.createId(); // generates random id for document
-      const path = `${docId}.jpg`;  // set the path (id + .jpg)
-
-      const storageRef = firebase.storage().ref(path);
-      
-      storageRef.putString(imageURI, 'data_url')
-      .then(snapshot => {
+    
+     // const docId = this.db.createId(); // generates random id for document
+      //const path = `${docId}.jpg`;  // set the path (id + .jpg)
+      return new Promise<any>((resolve, reject) => {
+        let storageRef = firebase.storage().ref();
+        let imageRef = storageRef.child('snapshots').child('aaaa').child('image');
+        this.encodeImageUri(imageURI, function(image64){
+          imageRef.putString(image64, 'data_url')
+          .then(snapshot => {
             resolve(snapshot.downloadURL)
           }, err => {
             reject(err);
-          });
-      // this.encodeImageUri(imageURI, function(image64){
-      //   storageRef.putString(image64, 'data_url')
-      //   .then(snapshot => {
-      //     resolve(snapshot.downloadURL)
-      //   }, err => {
-      //     reject(err);
-      //   })
-      // })
-    })
+          })
+        })
+      })
   }
 
  
