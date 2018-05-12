@@ -111,6 +111,8 @@ export class SnapModalPage {
     }
 
   saveSnapshot() {
+    this.util.presentToast('Save snapshot function', 'bottom'); 
+
     let title     : string	= this.snapForm.controls["snapTitle"].value,
         summary   : string 	= this.snapForm.controls["snapSummary"].value,
         image     : string	= this.snapForm.controls["snapImage"].value,

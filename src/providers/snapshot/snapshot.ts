@@ -4,6 +4,7 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { Snapshot } from '../../models/snapshot.interface';
 import firebase from 'firebase/app';
 import 'firebase/storage';
+import { UtilProvider } from '../util/util';
 //import { AngularFireUploadTask, AngularFireStorage } from 'angularfire2/storage';
 
 @Injectable()
@@ -14,7 +15,7 @@ export class SnapshotProvider {
   private fetchedSnapshots: Snapshot[] = []; 
   //task: AngularFireUploadTask;
 
-  constructor(public db: AngularFirestore) { }
+  constructor(public db: AngularFirestore, public util: UtilProvider) { }
 
   fetchSnapshots() {
     this.firebaseSubscriptions.push(this.db.collection('snapshots')
@@ -58,7 +59,7 @@ export class SnapshotProvider {
   };
 
   uploadImage(imageURI){
-    
+    this.util.presentToast('Komen we hier wel?', 'bottom'); 
      // const docId = this.db.createId(); // generates random id for document
       //const path = `${docId}.jpg`;  // set the path (id + .jpg)
       return new Promise<any>((resolve, reject) => {
