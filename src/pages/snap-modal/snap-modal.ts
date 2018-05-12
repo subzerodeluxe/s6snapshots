@@ -114,14 +114,13 @@ export class SnapModalPage {
     let title     : string	= this.snapForm.controls["snapTitle"].value,
         summary   : string 	= this.snapForm.controls["snapSummary"].value,
         image     : string	= this.snapForm.controls["snapImage"].value,
-        //image     : string  = 'https://wallpaperbrowse.com/media/images/750806.jpg',
         tags      : any     = this.snapForm.controls["snapTags"].value,
         date      : any     = this.snapForm.controls["snapDate"].value;
 
       if(this.isEditable) {
         //console.log('Still editable?'); 
         if(image !== this.snapImage) {
-          //image = normalizeURL(image);
+          image = normalizeURL(image);
           
           this.snapService.uploadImage(image)
             .then(photoURL => { 
@@ -157,7 +156,7 @@ export class SnapModalPage {
         }
       } else {
         //this.util.presentToast('TESTING', 'bottom'); 
-        //image = normalizeURL(image);
+        image = normalizeURL(image);
         //this.util.presentToast(JSON.stringify(image), 'bottom'); 
         this.snapService.uploadImage(image)
           .then(photoURL => { 
