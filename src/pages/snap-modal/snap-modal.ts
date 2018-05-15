@@ -20,8 +20,6 @@ export class SnapModalPage {
   snapshot: Snapshot;
   snapForm: FormGroup; 
   downloadURL: any; 
-  categories_checkbox_open: boolean;
-  categories_checkbox_result;
 
   public snapImage: string = '';  
   public snapTitle: string = '';
@@ -47,7 +45,7 @@ export class SnapModalPage {
         this.snapTags.push(tag); 
       }); 
 
-      this.isEditable = true; 
+      this.isEditable = true;  
     } else {
       this.snapDate = this.util.formatDate(new Date());
     }
@@ -55,7 +53,7 @@ export class SnapModalPage {
 
   initForm() {
     this.snapForm = this.formBuilder.group({
-      'snapTitle': ['', [Validators.required, Validators.minLength(4), Validators.maxLength(25)]],
+      'snapTitle': ['', [Validators.required, Validators.minLength(20), Validators.maxLength(25)]],
       'snapImage': ['',],
       'snapDate': ['', [Validators.required]],
       'snapSummary': ['',[Validators.required, Validators.maxLength(150), Validators.minLength(10)]],

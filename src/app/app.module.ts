@@ -33,7 +33,7 @@ import { HttpModule } from '@angular/http';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     AngularFirestoreModule,
-    AngularFirestoreModule.enablePersistence()
+    //AngularFirestoreModule.enablePersistence()
   ],
   bootstrap: [IonicApp],
   entryComponents: [

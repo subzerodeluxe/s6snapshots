@@ -19,4 +19,18 @@
     overflow-y: auto !important;
 }
 
+@font-face {
+    font-family: Pacifico;
+    src: url('../assets/fonts/pacifico.woff2') format('woff2');
+}
+
+
+@font-face {
+    font-family: Kalam;
+    src: url('../assets/fonts/kalam.woff2') format('woff2');
+}
+     
+ 
+
+
 @import "../theme/common";

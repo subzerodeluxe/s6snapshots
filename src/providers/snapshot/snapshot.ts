@@ -65,14 +65,14 @@ export class SnapshotProvider {
       return new Promise<any>((resolve, reject) => {
         let storageRef = firebase.storage().ref();
         let imageRef = storageRef.child('snapshots').child(path);
-        
-          imageRef.putString(imageURI, 'data_url')
+        this.encodeImageUri(imageURI, function(image64){
+          imageRef.putString(image64, 'data_url')
           .then(snapshot => {
             resolve(snapshot.downloadURL)
           }, err => {
             reject(err);
           })
-        
+        })
       })
   }
 
