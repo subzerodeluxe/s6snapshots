@@ -19,6 +19,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ImageProvider } from '../providers/image/image';
 import { Camera } from '@ionic-native/camera';
 import { HttpModule } from '@angular/http';
+import { AngularFireStorageModule } from 'angularfire2/storage';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { HttpModule } from '@angular/http';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     AngularFirestoreModule,
+    AngularFireStorageModule
     //AngularFirestoreModule.enablePersistence()
   ],
   bootstrap: [IonicApp],

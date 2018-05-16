@@ -6,6 +6,7 @@ import { UtilProvider } from '../../providers/util/util';
 import { SnapshotProvider } from '../../providers/snapshot/snapshot';
 import { ImageProvider } from '../../providers/image/image';
 import { Camera } from '@ionic-native/camera';
+import { tap } from 'rxjs/operators';
 
 @IonicPage({
   name: 'snapModal'
@@ -19,11 +20,10 @@ export class SnapModalPage {
   isEditable: boolean = false; 
   snapshot: Snapshot;
   snapForm: FormGroup; 
-  downloadURL: any; 
 
   public snapImage: string = '';  
   public snapTitle: string = '';
-  public snapDate: string = ''; // this.alertCtrl.formatDate(new Date());  
+  public snapDate: any;    
   public snapSummary: any = '';
   public snapTags: string[] = [];
   
@@ -33,30 +33,25 @@ export class SnapModalPage {
 
     if(this.navParams.get('isEdited')) {
       this.snapshot = this.navParams.get('snapshot');  
+      
       this.snapTitle = this.snapshot.title; 
       this.snapImage = this.snapshot.image;
-      // if(this.platform.is('cordova')) {
-      //   this.snapImage = this.snapshot.image; 
-      // } else { this.snapImage = 'http://kb4images.com/images/random-image/37670495-random-image.jpg'}
-      this.snapDate = this.snapshot.date;
       this.snapSummary = this.snapshot.summary;
+      this.snapDate = this.snapshot.createdAt; 
      
       this.snapshot.tags.forEach(tag => { 
         this.snapTags.push(tag); 
       }); 
 
       this.isEditable = true;  
-    } else {
-      this.snapDate = this.util.formatDate(new Date());
-    }
+    } 
   }
 
   initForm() {
     this.snapForm = this.formBuilder.group({
       'snapTitle': ['', [Validators.required, Validators.minLength(20), Validators.maxLength(25)]],
       'snapImage': ['',],
-      'snapDate': ['', [Validators.required]],
-      'snapSummary': ['',[Validators.required, Validators.maxLength(150), Validators.minLength(10)]],
+      'snapSummary': ['',[Validators.required, Validators.maxLength(250), Validators.minLength(10)]],
       'snapTags': ['', [Validators.required]]
     });
   }
@@ -77,12 +72,12 @@ export class SnapModalPage {
           text: 'Kies bestaande foto',
           handler: () => {
             this.imageService.selectImage(this.camera.PictureSourceType.PHOTOLIBRARY)
-              .then((data) => {
-                this.snapImage = data;
-                this.util.presentToast('Foto toegevoegd', 'top'); 
+              .then((base64) => {
+                this.snapImage = base64;
+                this.util.presentToast('Foto toegevoegd', 'bottom'); 
               })
               .catch(_ => {
-                this.util.presentToast('Er ging iets mis. Probeer het opnieuw', 'top'); 
+                this.util.presentToast('Er ging iets mis. Probeer het opnieuw', 'bottom'); 
               });
             }
           }, 
@@ -90,8 +85,8 @@ export class SnapModalPage {
           text: 'Maak een nieuwe foto',
           handler: () => {
             this.imageService.selectImage(this.camera.PictureSourceType.CAMERA)
-            .then((data) => {
-              this.snapImage = data;
+            .then((base64) => {
+              this.snapImage = base64;
               this.util.presentToast('Foto toegevoegd', 'top'); 
             })
             .catch(_ => {
@@ -114,73 +109,57 @@ export class SnapModalPage {
     let title     : string	= this.snapForm.controls["snapTitle"].value,
         summary   : string 	= this.snapForm.controls["snapSummary"].value,
         image     : string	= this.snapForm.controls["snapImage"].value,
-        tags      : any     = this.snapForm.controls["snapTags"].value,
-        date      : any     = this.snapForm.controls["snapDate"].value;
-
+        tags      : any     = this.snapForm.controls["snapTags"].value
+        
       if(this.isEditable) {
-        //console.log('Still editable?'); 
         if(image !== this.snapImage) {
-          image = normalizeURL(image);
-          
-          this.snapService.uploadImage(image)
-            .then(photoURL => { 
-              this.util.presentToast('Bezig met het uploaden van de afbeelding', 'bottom');
+          this.snapService.startUpload(image)
+            .then((photoURL) => {
               const uploadedImage = photoURL;
+
               const newSnapObject = {
-	              title    : title,
-	              summary  : summary,
-                date     : date, 
+                title    : title,
+                summary  : summary,
                 image    : uploadedImage,
                 tags     : tags 
               }; 
-        
-              // Update existing snapshot in database 
               this.snapService.updateDatabase(this.snapshot.id, newSnapObject)
-                .then(success => { this.closeModal(); this.util.presentToast('Hoera! De snapshot is gewijzigd!', 'bottom');})
-                .catch(err => { this.util.presentToast(err, 'bottom');})
-            })
-            // Somethin went wrong trying to upload the image to storage 
-            .catch(() => this.util.presentToast('Er ging iets mis :(', 'bottom'))
-          } else {
+                  .then(success => { this.closeModal(); this.util.presentToast('Hoera! De snapshot is gewijzigd!', 'bottom');})
+                  .catch(() => { this.util.presentToast('Er ging iets mis met het plaatsen van de snapshot :(', 'bottom')})
+              })
+            .catch(() => this.util.presentToast('Er ging iets mis met het uploaden van de afbeelding :(', 'bottom'))
+        } else {
+          const newSnapObject = {
+            title    : title,
+            summary  : summary,
+            image    : this.snapImage, 
+            tags     : tags
+          }
+        
+          this.snapService.updateDatabase(this.snapshot.id, newSnapObject)
+            .then(success => { this.closeModal(); this.util.presentToast('Hoera! De snapshot is gewijzigd!', 'bottom');})
+            .catch(() => { this.util.presentToast('Er ging iets mis met het plaatsen van de snapshot :(', 'bottom')})
+          }
+      } else {
+        this.snapService.startUpload(image)
+          .then((photoURL) => {
+            const uploadedImage = photoURL;
+
             const newSnapObject = {
               title    : title,
               summary  : summary,
-              date     : date, 
-              image    : this.snapImage, 
-              tags     : tags
-            }
-            console.log('Invoked! 1');
+              image    : uploadedImage,
+              tags     : tags 
+            }; 
             this.snapService.updateDatabase(this.snapshot.id, newSnapObject)
-              .then(success => { this.closeModal(); this.util.presentToast('Hoera! De snapshot is gewijzigd!', 'bottom');})
-              .catch(err => { this.util.presentToast(err, 'bottom');}) 
-        }
-      } else {
-        //this.util.presentToast('TESTING', 'bottom'); 
-        image = normalizeURL(image);
-        //this.util.presentToast('Uploading image', 'bottom');
-        //this.util.presentToast(JSON.stringify(image), 'bottom'); 
-        this.snapService.uploadImage(image)
-          .then(photoURL => { 
-              this.util.presentToast('Bezig met het uploaden van de afbeelding', 'bottom');
-              const uploadedImage = photoURL; 
-              const newSnapObject = {
-	              title    : title,
-	              summary  : summary,
-                date     : date, 
-                image    : uploadedImage,
-                tags     : tags 
-              }; 
-      
-              // Add snapshot to database 
-              this.snapService.addToDatabase(newSnapObject) 
-                .then(success => { this.closeModal(); this.util.presentToast('Hoera! De snapshot is toegevoegd!', 'bottom');})
-                .catch(err => { this.util.presentToast(err, 'bottom');})
-            });
+              .then(success => { this.closeModal(); this.util.presentToast('Hoera! De snapshot is toegevoegd!', 'bottom');})
+              .catch(() => { this.util.presentToast('Er ging iets mis :(', 'bottom')})
+          })
+          .catch(() => this.util.presentToast('Er ging iets mis met het uploaden van de afbeelding :(', 'bottom'))
       };
   }
 
   deleteSnapshot() {
-    // console.log('Doorgegeven id: ', this.snapshot.id); 
      this.snapService.deleteSnapshot(this.snapshot.id)
        .then(() => { 
         this.util.presentToast('Snapshot is verwijderd', 'bottom');

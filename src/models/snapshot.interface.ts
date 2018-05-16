@@ -1,9 +1,8 @@
 export interface Snapshot {
     id?: string, 
-    date?: string, 
+    createdAt?: Date, 
     image: string,  
     summary: string,        
     tags?: string[],
-    title: string,  
-    author?: string 
+    title: string
 }

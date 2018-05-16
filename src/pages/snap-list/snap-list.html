@@ -24,7 +24,6 @@
         </ion-refresher-content>
       </ion-refresher>
       
-      
       <div *ngIf="fetchingData" class="fetching">
           <ion-spinner color="spinner"></ion-spinner>
       </div>
@@ -34,7 +33,7 @@
             <button class="list-item" ion-item (click)="editSnapshot(snapshot)">
               <ion-row no-padding class="content-row">
                 <ion-col no-padding width-33 class="item-avatar">
-                  <preload-image class="avatar-image" [ratio]="{w:1, h:1}" [src]="snapshot.image"></preload-image>
+                  <preload-image class="avatar-image" [ratio]="{w:1, h:1}" [src]="snapshot.image || 'http://via.placeholder.com/350x350'"></preload-image>
                 </ion-col>
                 <ion-col no-padding width-57 class="item-content">
                   <h3 class="item-title">{{snapshot.title}}</h3>
